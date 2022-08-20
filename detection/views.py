@@ -54,31 +54,31 @@ class EquipmentTotalView(View):
         # 3. 각 장비별로 state count 계산해서
         # 4. JsonResponse로 반환하기
 
-        ## 1안. 오늘 기준으로 
-        select  = request.GET.get('select')  
+        # ## 1안. 오늘 기준으로 
+        # select  = request.GET.get('select')  
 
-        ##############################################################
-        # DateTimeField Detection.datetime received a naive datetime 
-        # (2022-08-20 00:00:00) while time zone support is active.
-        ##############################################################
-        now            = datetime.datetime.utcnow()
-        today_datetime = utc.localize(now).astimezone(KST)
-        #today_date     = today_datetime.strftime('%Y-%m-%d') ## navie
+        # ##############################################################
+        # # DateTimeField Detection.datetime received a naive datetime 
+        # # (2022-08-20 00:00:00) while time zone support is active.
+        # ##############################################################
+        # now            = datetime.utcnow()
+        # today_datetime = utc.localize(now).astimezone(KST)
+        # #today_date     = today_datetime.strftime('%Y-%m-%d') ## navie
 
-        q = Q()
+        # q = Q()
 
-        if select == daily or not select:
-            q &= Q(datetime__date=datetime.now())
-            q &= Q(datetime__date=today_datetime)
+        # if select == 'daily' :#or not select:
+        #     # q &= Q(datetime__date=datetime.now())
+        #     q &= Q(datetime__date=today_datetime)
 
-        elif select == weekly:
-            weekday = today_datetime.weekday() # 0:월, 1:화, 2:수, 3:목, 4:금, 5:토, 6:일
-            mon_datetime = today_datetime - timedelta(days=weekday)
-            q &= Q(datetime__gte=mon_datetime)
+        # elif select == 'weekly':
+        #     weekday = today_datetime.weekday() # 0:월, 1:화, 2:수, 3:목, 4:금, 5:토, 6:일
+        #     mon_datetime = today_datetime - timedelta(days=weekday)
+        #     q &= Q(datetime__gte=mon_datetime)
             
-        elif select == monthly:
-            month = today_datetime.month 
-            q &= Q(datetime__month=month) 
+        # elif select == 'monthly':
+        #     month = today_datetime.month 
+        #     q &= Q(datetime__month=month) 
 
         ## 2안. 날짜로 선택
         daily   = request.GET.get('daily')
